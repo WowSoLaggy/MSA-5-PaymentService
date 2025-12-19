@@ -12,6 +12,7 @@ title Payment Service Flow (Happy Path)
 
 (fraud_check_pending) --> (fraud_check_manual) : fraud_send_manual
 (fraud_check_manual) -> (fraud_check_success) : fraud_manual_approved
+(fraud_check_manual) -> (fraud_check_success) : fraud_manual_timeout
 (fraud_check_manual) -left-> (fraud_check_failed) : fraud_manual_rejected
 
 (fraud_check_pending) --> (fraud_check_failed) : fraud_detected
