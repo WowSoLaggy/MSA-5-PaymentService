@@ -1,0 +1,51 @@
+@startuml bpmn.puml
+title Payment Orchestration BPMN
+
+<style>
+activityDiagram {
+  BackgroundColor #lightgreen
+}
+document {
+  BackgroundColor transparent
+}
+</style>
+
+start
+:Payment Initiated;
+:Block Amount;
+:Fraud Check;
+
+if (Fraud Result?) then (fraud detected)
+  #pink:FRAUD;
+  #orange:Release Amount;
+  #orange:Notify Failure;
+  stop
+elseif (Manual Review Needed?) then (yes)
+  :Send to Manual Review;
+  if (Decision?) then (approved or timeout)
+  else (rejected)
+    #pink:FRAUD;
+    #orange:Release Amount;
+    #orange:Notify Failure;
+    stop
+  endif
+else (no, check passed)
+endif
+
+:Execute Payment;
+
+if (Payment Success?) then (no)
+  #pink:PAYMENT FAILURE;
+  #orange:Automatic Rollback;
+  #orange:Release Amount;
+  #orange:Notify Failure;
+  stop
+endif
+
+:Notify Success;
+
+stop
+
+
+
+@enduml
